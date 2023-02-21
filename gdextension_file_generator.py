@@ -10,6 +10,7 @@ Example:
 python3 gdextension_file_generator.py <project-name> <lib-filename>
 """
 
+
 def main(args):
     """
     main
@@ -56,12 +57,20 @@ entry_symbol = \"{project_name}_extension_init\"
     return contents
 
 
+def get_platform_dynamic_library_extension(platform):
+    return {
+        "macos": "dylib",
+        "linux": "so",
+        "windows": "dll"
+    }[platform]
+
+
 def create_gdextension_lib_string(lib):
     """
     Create gdextension lib string
 
     Expected lib filename format
-    <lib-name>.<platform>.<build-type>.<architecture>.<file-extension>
+    <lib-name>.<platform>.<build-type>.<architecture>
 
     :param lib: lib filename
     :return: formatted line string to be added to .gdextension file
@@ -70,9 +79,11 @@ def create_gdextension_lib_string(lib):
     platform = items[1]
     build_type = items[2].replace('template_', '')
     arch = "" if platform == "macos" else "." + items[3]
+    ext = get_platform_dynamic_library_extension(platform)
     path_elements = os.getcwd().split(os.path.sep)
     current_dir_name = path_elements[len(path_elements) - 1]
-    lib_string = f"{platform}.{build_type}{arch} = \"res://{os.path.join(os.path.join(current_dir_name, 'build'), lib)}\""
+    path_to_lib = os.path.join(os.path.join(current_dir_name, 'build'), lib)
+    lib_string = f"{platform}.{build_type}{arch} = \"res://{path_to_lib}.{ext}\""
     return lib_string
 
 
