@@ -1,8 +1,8 @@
 project(test)
 cmake_minimum_required(VERSION 3.6)
 
-set(GODOT_GDEXTENSION_DIR ../godot-cpp/gdextension/ CACHE STRING "Path to GDExtension interface header directory")
-set(CPP_BINDINGS_PATH ../godot-cpp/ CACHE STRING "Path to C++ bindings")
+set(GODOT_GDEXTENSION_DIR godot-cpp/gdextension/ CACHE STRING "Path to GDExtension interface header directory")
+set(CPP_BINDINGS_PATH godot-cpp/ CACHE STRING "Path to C++ bindings")
 
 if (CMAKE_BUILD_TYPE STREQUAL "")
 	message(STATUS "Setting debug build as default")
@@ -57,9 +57,9 @@ else()
 	set(GODOT_COMPILE_FLAGS "${GODOT_COMPILE_FLAGS} -O3")
 endif()
 
-include_directories(../godot-cpp/gen/include
-					../godot-cpp/include
-					../godot-cpp/gdextension)
+include_directories(godot-cpp/gen/include
+					godot-cpp/include
+					godot-cpp/gdextension)
 
 file(GLOB_RECURSE SOURCES src/*.c**)
 file(GLOB_RECURSE HEADERS src/headers/*.h**)
