@@ -62,7 +62,7 @@ include_directories(godot-cpp/gen/include
 					godot-cpp/gdextension)
 
 file(GLOB_RECURSE SOURCES src/*.c**)
-file(GLOB_RECURSE HEADERS include/*.h**)
+file(GLOB_RECURSE HEADERS src/headers/*.h**)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 
