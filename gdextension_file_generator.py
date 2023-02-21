@@ -47,7 +47,7 @@ def create_gdextension_file_contents(project_name, lib):
     contents = \
         f"""[configuration]
   
-entry_symbol = {project_name}_extension_init
+entry_symbol = \"{project_name}_extension_init\"
  
 [libraries]
    
@@ -72,7 +72,7 @@ def create_gdextension_lib_string(lib):
     arch = "" if platform == "macos" else "." + items[3]
     path_elements = os.getcwd().split(os.path.sep)
     current_dir_name = path_elements[len(path_elements) - 1]
-    lib_string = f"{platform}.{build_type}{arch} = res://{os.path.join(os.path.join(current_dir_name, 'build'), lib)}"
+    lib_string = f"{platform}.{build_type}{arch} = \"res://{os.path.join(os.path.join(current_dir_name, 'build'), lib)}\""
     return lib_string
 
 
