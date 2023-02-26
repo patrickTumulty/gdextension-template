@@ -57,12 +57,13 @@ else()
 	set(GODOT_COMPILE_FLAGS "${GODOT_COMPILE_FLAGS} -O3")
 endif()
 
+include_directories(src/headers)
 include_directories(godot-cpp/gen/include
 					godot-cpp/include
 					godot-cpp/gdextension)
 
 file(GLOB_RECURSE SOURCES src/*.c**)
-file(GLOB_RECURSE HEADERS include/*.h**)
+file(GLOB_RECURSE HEADERS src/headers/*.h**)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 

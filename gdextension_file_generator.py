@@ -80,10 +80,7 @@ def create_gdextension_lib_string(lib):
     build_type = items[2].replace('template_', '')
     arch = "" if platform == "macos" else "." + items[3]
     ext = get_platform_dynamic_library_extension(platform)
-    path_elements = os.getcwd().split(os.path.sep)
-    current_dir_name = path_elements[len(path_elements) - 1]
-    path_to_lib = os.path.join(os.path.join(current_dir_name, 'build'), lib)
-    lib_string = f"{platform}.{build_type}{arch} = \"res://{path_to_lib}.{ext}\""
+    lib_string = f"{platform}.{build_type}{arch} = \"res://libs/lib{lib}.{ext}\""
     return lib_string
 
 

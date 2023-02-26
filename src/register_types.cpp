@@ -1,6 +1,6 @@
 
 
-#include "../include/register_types.h"
+#include "headers/register_types.h"
 
 #include <gdextension_interface.h>
 
@@ -9,7 +9,7 @@
 #include <godot_cpp/godot.hpp>
 
 
-#include "../include/Test.h"
+#include "headers/Test.h"
 
 
 
