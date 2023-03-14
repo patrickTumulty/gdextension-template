@@ -31,30 +31,39 @@ def main(args):
                 fout.write(f"{lib_line}\n")
     else:
         with open(gd_extension_filename, "w") as fout:
-            file_contents = create_gdextension_file_contents(project_name, lib)
+            file_contents = create_gdextension_file_contents(lib)
             fout.write(file_contents)
 
 
-def create_gdextension_file_contents(project_name, lib):
+def create_gdextension_file_contents(lib):
     """
     Generate the contents for a .gdextension file
 
-    :param project_name: project name
     :param lib: library filename
     :return: .gdextension file contents
     """
+    function_name = get_entry_point_name()
+
     lib_string = create_gdextension_lib_string(lib)
 
     contents = \
         f"""[configuration]
   
-entry_symbol = \"{project_name}_extension_init\"
+entry_symbol = \"{function_name}\"
  
 [libraries]
    
 {lib_string}
 """
     return contents
+
+
+def get_entry_point_name():
+    with open("src/register_types.cpp") as f:
+        for line in f.readlines():
+            if "GDE_EXPORT" in line:
+                return line.split("GDE_EXPORT")[1].split("(")[0].strip()  # Should probably be a proper regex
+    return ""
 
 
 def get_platform_dynamic_library_extension(platform):

@@ -1,6 +1,6 @@
 
 
-#include "headers/register_types.h"
+#include "register_types.h"
 
 #include <gdextension_interface.h>
 
