@@ -5,19 +5,15 @@ GD Extension Build Script
 Options:
   --help         : Print help text
   --bt           : Type of build (Debug, Release) (Debug if not specified)
-  --extension    : Build gdextension library
-  --godot-cpp    : Build godot-cpp with scons
   --cpgdf        : Copy generated .gdextension file into game dir 
 
 Example:
-  $ ./build.sh --bt=Debug --extension --godot-cpp --cpgdf
+  $ ./build.sh --bt=Debug --cpgdf
 
 EOF
 
 
 BUILD_TYPE=Debug
-GODOT_CPP=FALSE
-GDEXTENSION=FALSE
 COPY_FILES=FALSE
 
 parseValue() {
@@ -34,37 +30,21 @@ do
     exit 0
   elif [[ "$arg" == --build-type=* ]]; then
     BUILD_TYPE=$(parseValue "$arg")
-  elif [ "$arg" == --godot-cpp ]; then
-    GODOT_CPP=TRUE
-  elif [ "$arg" == --extension ]; then
-    GDEXTENSION=TRUE
   elif [ "$arg" == --cpgdf ]; then
     COPY_FILES=TRUE
   fi
 done
 
-if [ $GODOT_CPP == TRUE ]; then
-  cd godot-cpp || exit 1
-  GD_CPP_BUILD_TYPE=template_debug
-  if [ "$BUILD_TYPE" == Release ]; then
-    GD_CPP_BUILD_TYPE=template_release
-  fi
-  scons target=$GD_CPP_BUILD_TYPE
-  cd ..
-fi
-
-if [ $GDEXTENSION == TRUE ]; then 
-  mkdir -p build/
-  cd build || exit 1
-  cmake -D CMAKE_BUILD_TYPE="$BUILD_TYPE" ..
-  make
-  cd ..
-fi
+mkdir -p build/
+cd build || exit 1
+cmake -D CMAKE_BUILD_TYPE="$BUILD_TYPE" ..
+make
+cd ..
 
 if [ $COPY_FILES == TRUE ]; then
-  cp build/*.dylib game/libs
-  cp build/*.so game/libs
-  cp build/*.dll game/libs
-  cp ./*.gdextension game/
+  cp build/*.dylib game/libs 2>/dev/null
+  cp build/*.so game/libs 2>/dev/null
+  cp build/*.dll game/libs 2>/dev/null
+  cp ./*.gdextension game/ 2>/dev/null
 fi
 
