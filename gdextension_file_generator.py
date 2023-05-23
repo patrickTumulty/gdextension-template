@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 
 """
 This script generates the .gdextension file necessary for importing the 
@@ -19,8 +20,9 @@ def main(args):
     """
     project_name = args[1]
     lib = args[2]
+    current_dir = args[3]
 
-    gd_extension_filename = f"{project_name}.gdextension"
+    gd_extension_filename = f"{current_dir}{os.path.sep}{project_name}.gdextension"
 
     if os.path.exists(gd_extension_filename):
         lib_line = create_gdextension_lib_string(lib)
@@ -31,18 +33,19 @@ def main(args):
                 fout.write(f"{lib_line}\n")
     else:
         with open(gd_extension_filename, "w") as fout:
-            file_contents = create_gdextension_file_contents(lib)
+            file_contents = create_gdextension_file_contents(lib, current_dir)
             fout.write(file_contents)
 
 
-def create_gdextension_file_contents(lib):
+def create_gdextension_file_contents(lib, current_dir):
     """
     Generate the contents for a .gdextension file
 
+    :param current_dir: curreent directory
     :param lib: library filename
     :return: .gdextension file contents
     """
-    function_name = get_entry_point_name()
+    function_name = get_entry_point_name(current_dir)
 
     lib_string = create_gdextension_lib_string(lib)
 
@@ -58,8 +61,8 @@ entry_symbol = \"{function_name}\"
     return contents
 
 
-def get_entry_point_name():
-    with open("src/register_types.cpp") as f:
+def get_entry_point_name(current_dir):
+    with open(f"{current_dir}/src/register_types.cpp") as f:
         for line in f.readlines():
             if "GDE_EXPORT" in line:
                 return line.split("GDE_EXPORT")[1].split("(")[0].strip()  # Should probably be a proper regex

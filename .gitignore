@@ -1,4 +1,9 @@
 build/
 cmake-build-debug/
 
+*.a
+*.so
+*.dll
+*.dylib
+
 *.gdextension
